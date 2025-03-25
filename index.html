@@ -90,13 +90,13 @@
     <div id="promptsContainer"></div>
 
     <script>
-        // List of text files to load (add more filenames here as needed)
-        const textFiles = ['TechStack.txt']; // Start with one, expand as you add files
-
+        const owner = 'BebPrompt';
+        const repo = 'BebPrompt.github.io';
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/`;
         const container = document.getElementById('promptsContainer');
 
-        // Function to create a prompt box for each file
-        function createPromptBox(filename) {
+        // Function to create a prompt box for each .txt file
+        function createPromptBox(filename, rawUrl) {
             const box = document.createElement('div');
             box.className = 'code-box';
 
@@ -114,12 +114,12 @@
 
             // Add content area
             const content = document.createElement('span');
-            content.id = `content-${filename}`; // Unique ID for each content
+            content.id = `content-${filename.replace('.', '-')}`; // Unique ID
             content.textContent = 'Loading...';
             box.appendChild(content);
 
-            // Fetch and load file content
-            fetch(filename)
+            // Fetch file content using raw URL
+            fetch(rawUrl)
                 .then(response => {
                     if (!response.ok) throw new Error('File not found');
                     return response.text();
@@ -149,11 +149,32 @@
             return box;
         }
 
-        // Populate the page with boxes for each file
-        textFiles.forEach(filename => {
-            const promptBox = createPromptBox(filename);
-            container.appendChild(promptBox);
-        });
+        // Fetch list of files from GitHub API
+        fetch(apiUrl, {
+            headers: {
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('Repository not found or rate limit exceeded');
+                return response.json();
+            })
+            .then(data => {
+                const textFiles = data.filter(file => file.name.endsWith('.txt'));
+                if (textFiles.length === 0) {
+                    container.textContent = 'No .txt files found in the repository.';
+                    return;
+                }
+                textFiles.forEach(file => {
+                    const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/${file.name}`;
+                    const promptBox = createPromptBox(file.name, rawUrl);
+                    container.appendChild(promptBox);
+                });
+            })
+            .catch(error => {
+                container.textContent = 'Error: Could not load files from GitHub. Check console for details.';
+                console.error(error);
+            });
     </script>
 </body>
 </html>
