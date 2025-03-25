@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f0f2f5;
+            background-color: #2b2b2b; /* Dark gray background */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -17,7 +17,7 @@
         }
 
         h1 {
-            color: #333;
+            color: #ffffff; /* White text for dark mode */
             font-size: 2.5em;
             margin-bottom: 20px;
             text-align: center;
@@ -31,11 +31,19 @@
             color: #d4d4d4;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             font-family: 'Courier New', Courier, monospace;
             font-size: 1em;
             white-space: pre-wrap;
             overflow-x: auto;
+            margin-bottom: 20px; /* Space between boxes */
+        }
+
+        .box-title {
+            color: #ffffff;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
 
         .copy-btn {
@@ -79,37 +87,73 @@
 </head>
 <body>
     <h1>Prompts</h1>
-    <div class="code-box" id="codeContent">
-        <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
-        <span id="fileContent">Loading...</span>
-    </div>
+    <div id="promptsContainer"></div>
 
     <script>
-        // Fetch the TechStack.txt file and display its content
-        fetch('TechStack.txt')
-            .then(response => {
-                if (!response.ok) throw new Error('File not found');
-                return response.text();
-            })
-            .then(text => {
-                document.getElementById('fileContent').textContent = text;
-            })
-            .catch(error => {
-                document.getElementById('fileContent').textContent = 'Error: Could not load TechStack.txt';
-                console.error(error);
+        // List of text files to load (add more filenames here as needed)
+        const textFiles = ['TechStack.txt']; // Start with one, expand as you add files
+
+        const container = document.getElementById('promptsContainer');
+
+        // Function to create a prompt box for each file
+        function createPromptBox(filename) {
+            const box = document.createElement('div');
+            box.className = 'code-box';
+
+            // Add title based on filename
+            const title = document.createElement('div');
+            title.className = 'box-title';
+            title.textContent = filename;
+            box.appendChild(title);
+
+            // Add copy button
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.textContent = 'Copy';
+            box.appendChild(copyBtn);
+
+            // Add content area
+            const content = document.createElement('span');
+            content.id = `content-${filename}`; // Unique ID for each content
+            content.textContent = 'Loading...';
+            box.appendChild(content);
+
+            // Fetch and load file content
+            fetch(filename)
+                .then(response => {
+                    if (!response.ok) throw new Error('File not found');
+                    return response.text();
+                })
+                .then(text => {
+                    content.textContent = text;
+                })
+                .catch(error => {
+                    content.textContent = `Error: Could not load ${filename}`;
+                    console.error(error);
+                });
+
+            // Copy functionality
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(content.textContent)
+                    .then(() => {
+                        copyBtn.textContent = 'Copied!';
+                        setTimeout(() => {
+                            copyBtn.textContent = 'Copy';
+                        }, 2000); // Reset after 2 seconds
+                    })
+                    .catch(err => {
+                        alert('Failed to copy: ' + err);
+                    });
             });
 
-        // Copy the content to clipboard
-        function copyToClipboard() {
-            const content = document.getElementById('fileContent').textContent;
-            navigator.clipboard.writeText(content)
-                .then(() => {
-                    alert('Copied to clipboard!');
-                })
-                .catch(err => {
-                    alert('Failed to copy: ' + err);
-                });
+            return box;
         }
+
+        // Populate the page with boxes for each file
+        textFiles.forEach(filename => {
+            const promptBox = createPromptBox(filename);
+            container.appendChild(promptBox);
+        });
     </script>
 </body>
 </html>
