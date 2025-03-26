@@ -1,0 +1,619 @@
+I need you to integrate monetization features into an RPG game targeting iOS and Android via React Native, using the development environment, UI/UX, and core mechanics you set up in the RPGGame directory from the previous steps. This is a mobile game with a pixel art or cartoonish style, using SVGs from Figma for all visual assets, and it features turn-based gameplay with animations. Your task is to execute all necessary commands, create and update files, and implement in-app purchases and rewarded ads directly on my Windows 10/11 machine, assuming you have full access to run commands like npm, expo, and file system operations via Cursor AI. Use the existing setup (React Native, Expo, Reanimated, React Navigation, RecyclerListView, AsyncStorage, etc.) and deliver a fully functional game with time-saving monetization, without explanations—do not deviate from my specified requirements or add unsolicited features. Here’s exactly what to do:
+Monetization Requirements
+Base Energy: Set base energy regeneration to 1 per 10 minutes (6 per hour), with a default limit of 10.
+
+In-App Purchases:
+Instant Energy Refill: Restores energy to current max ($0.99).
+
+Value Play Pass: Lifetime purchase for Double XP, Double Rewards, No Ads, Double Energy Recovery (2 per 10 minutes), Double Energy Limit (20) ($4.99).
+
+Gold Play Pass: Monthly subscription for Triple XP, Triple Rewards, No Ads, Triple Energy Recovery (3 per 10 minutes), Triple Energy Limit (30) ($4.99/month).
+
+Rewarded Ads (for non-pass holders):
+
+Energy Surge: 1-hour double Energy boost per ad.
+XP Surge: 1-hour double XP boost per ad.
+
+Use AsyncStorage to store purchase states, energy, and boost timers locally, updating the .env file with API keys.
+
+Integrate monetization into a new Shop screen and update existing screens (e.g., Main Menu, Battle) to reflect energy, boosts, and ad status.
+
+Setup Steps
+Install Additional Dependencies:
+Execute cd RPGGame to navigate into the project directory if not already there.
+
+Execute npm install expo-in-app-purchases expo-ads-admob to add libraries for in-app purchases and AdMob ads.
+
+Verify installations by checking the updated package.json reflects these dependencies.
+
+Update Environment Variables:
+Overwrite .env in the RPGGame directory with additional placeholders:
+
+EXPO_PUBLIC_API_KEY=
+EXPO_PUBLIC_ADMOB_ID=ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy
+EXPO_PUBLIC_IAP_ANDROID_KEY=google_play_key_placeholder
+EXPO_PUBLIC_IAP_IOS_KEY=apple_store_key_placeholder
+EXPO_PUBLIC_ADMOB_REWARD_ID=ca-app-pub-xxxxxxxxxxxxxxxx/zzzzzzzzzz
+
+Update Game Data for Monetization:
+Overwrite utils/gameData.js to include energy, boosts, and shop items:
+javascript
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const initialCharacters = [
+  { id: 1, name: 'Hero1', svg: 'assets/characters/hero1.svg', hp: 100, moves: [{ id: 'm1', name: 'Slash', damage: 20 }, { id: 'm2', name: 'Heal', heal: 15 }] },
+  { id: 2, name: 'Hero2', svg: 'assets/characters/hero2.svg', hp: 80, moves: [{ id: 'm3', name: 'Fire', damage: 25 }, { id: 'm4', name: 'Shield', shield: 10 }] },
+];
+const enemies = [
+  { id: 1, name: 'Goblin', svg: 'assets/characters/enemy1.svg', hp: 50, moves: [{ id: 'e1', name: 'Bite', damage: 15 }] },
+  { id: 2, name: 'Troll', svg: 'assets/characters/enemy2.svg', hp: 70, moves: [{ id: 'e2', name: 'Smash', damage: 20 }] },
+];
+const quests = [
+  { id: 1, title: 'Beginner’s Path', description: 'Defeat 1 enemy', reward: 'New Character', completed: false },
+  { id: 2, title: 'Forest Trial', description: 'Defeat 2 enemies', reward: 'Health Boost', completed: false },
+  { id: 3, title: 'Cave Challenge', description: 'Defeat 3 enemies', reward: 'New Move', completed: false },
+  { id: 4, title: 'City Clash', description: 'Defeat 4 enemies', reward: 'Rare Item', completed: false },
+  { id: 5, title: 'Final Stand', description: 'Defeat 5 enemies', reward: 'Victory', completed: false },
+  { id: 6, title: 'Side: Lost Treasure', description: 'Explore Forest', reward: 'Bonus HP', completed: false, side: true },
+  { id: 7, title: 'Side: Hidden Foe', description: 'Defeat Troll', reward: 'Extra Move', completed: false, side: true },
+];
+const shopItems = [
+  { id: 'energyrefill', name: 'Energy Refill', type: 'refill', price: '0.99' },
+  { id: 'doublexp', name: 'Double XP (24h)', type: 'boost', price: '1.99', duration: 24 * 60 * 60 * 1000 },
+  { id: 'doublerewards', name: 'Double Rewards (12h)', type: 'boost', price: '1.49', duration: 12 * 60 * 60 * 1000 },
+  { id: 'doubleenergy', name: 'Double Energy Recovery (48h)', type: 'boost', price: '2.99', duration: 48 * 60 * 60 * 1000 },
+  { id: 'extendedpass', name: 'Extended Play Pass', type: 'lifetime', price: '4.99' },
+  { id: 'goldpass', name: 'Gold Play Pass (Monthly)', type: 'subscription', price: '4.99' },
+];
+
+export const initializeGameData = async () => {
+  await AsyncStorage.setItem('characters', JSON.stringify(initialCharacters));
+  await AsyncStorage.setItem('enemies', JSON.stringify(enemies));
+  await AsyncStorage.setItem('quests', JSON.stringify(quests));
+  await AsyncStorage.setItem('playerTeam', JSON.stringify([initialCharacters[0]]));
+  await AsyncStorage.setItem('shopItems', JSON.stringify(shopItems));
+  await AsyncStorage.setItem('energy', JSON.stringify(10));
+  await AsyncStorage.setItem('boosts', JSON.stringify({ doubleXP: 0, doubleRewards: 0, doubleEnergy: 0, extendedPass: false, goldPass: 0 }));
+  await AsyncStorage.setItem('lastEnergyUpdate', JSON.stringify(Date.now()));
+};
+
+export const getData = async (key) => JSON.parse(await AsyncStorage.getItem(key)) || (key === 'energy' ? 10 : key === 'boosts' ? { doubleXP: 0, doubleRewards: 0, doubleEnergy: 0, extendedPass: false, goldPass: 0 } : key === 'lastEnergyUpdate' ? Date.now() : []);
+export const saveData = async (key, data) => await AsyncStorage.setItem(key, JSON.stringify(data));
+
+export const checkBoost = async (boostType) => {
+  const boosts = await getData('boosts');
+  const now = Date.now();
+  return boostType === 'extendedPass' ? boosts.extendedPass : boosts[boostType] > now;
+};
+
+export const applyBoost = async (boostType, duration = 0) => {
+  const boosts = await getData('boosts');
+  if (boostType === 'extendedPass') boosts.extendedPass = true;
+  else boosts[boostType] = Date.now() + duration;
+  await saveData('boosts', boosts);
+};
+
+export const updateEnergy = async () => {
+  const lastUpdate = await getData('lastEnergyUpdate');
+  const now = Date.now();
+  const minutesPassed = Math.floor((now - lastUpdate) / (10 * 60 * 1000));
+  if (minutesPassed > 0) {
+    const boosts = await getData('boosts');
+    const baseRate = 1;
+    const rateMultiplier = (boosts.extendedPass ? 2 : 1) * (boosts.goldPass > now ? 3 : boosts.doubleEnergy > now ? 2 : 1);
+    const maxEnergy = (boosts.extendedPass ? 20 : 10) * (boosts.goldPass > now ? 3 : 1);
+    const currentEnergy = await getData('energy');
+    const newEnergy = Math.min(maxEnergy, currentEnergy + minutesPassed * baseRate * rateMultiplier);
+    await saveData('energy', newEnergy);
+    await saveData('lastEnergyUpdate', now);
+    return newEnergy;
+  }
+  return await getData('energy');
+};
+
+Update Battle Logic for Boosts:
+Overwrite utils/battleLogic.js to apply boosts:
+javascript
+
+import { getData, saveData, checkBoost } from './gameData';
+
+export const startBattle = async () => {
+  const enemies = await getData('enemies');
+  return enemies[Math.floor(Math.random() * enemies.length)];
+};
+
+export const applyMove = async (move, target, source) => {
+  let updatedTarget = { ...target };
+  if (move.damage) updatedTarget.hp = Math.max(0, target.hp - move.damage);
+  if (move.heal) updatedTarget.hp = Math.min(100, target.hp + move.heal);
+  if (move.shield) updatedTarget.hp += move.shield; // Simplified shield effect
+  return updatedTarget;
+};
+
+export const enemyTurn = (enemy) => {
+  const move = enemy.moves[Math.floor(Math.random() * enemy.moves.length)];
+  return move;
+};
+
+export const endBattle = async (enemyDefeated) => {
+  const boosts = await getData('boosts');
+  const now = Date.now();
+  const xpMultiplier = (boosts.extendedPass ? 2 : 1) * (boosts.goldPass > now ? 3 : boosts.doubleXP > now ? 2 : 1);
+  const rewardMultiplier = (boosts.extendedPass ? 2 : 1) * (boosts.goldPass > now ? 3 : boosts.doubleRewards > now ? 2 : 1);
+  const xp = (enemyDefeated ? 10 : 5) * xpMultiplier;
+  const rewardCount = enemyDefeated ? 1 * rewardMultiplier : 0;
+  return { xp, rewardCount };
+};
+
+Create Shop Screen:
+Create screens/ShopScreen.js for in-app purchases:
+javascript
+
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { InAppPurchases } from 'expo-in-app-purchases';
+import { getData, saveData, applyBoost, updateEnergy } from '../utils/gameData';
+
+export default function ShopScreen() {
+  const [shopItems, setShopItems] = useState([]);
+  const [energy, setEnergy] = useState(0);
+
+  useEffect(() => {
+    const setupIAP = async () => {
+      await InAppPurchases.connectAsync();
+      const items = await getData('shopItems');
+      setShopItems(items);
+      const currentEnergy = await updateEnergy();
+      setEnergy(currentEnergy);
+    };
+    setupIAP();
+    return () => InAppPurchases.disconnectAsync();
+  }, []);
+
+  const purchaseItem = async (itemId) => {
+    const { responseCode, results } = await InAppPurchases.purchaseItemAsync(itemId);
+    if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+      const item = shopItems.find(i => i.id === itemId);
+      if (item.type === 'refill') {
+        const boosts = await getData('boosts');
+        const maxEnergy = (boosts.extendedPass ? 20 : 10) * (boosts.goldPass > Date.now() ? 3 : 1);
+        setEnergy(maxEnergy);
+        await saveData('energy', maxEnergy);
+      } else if (item.type === 'boost' || item.type === 'lifetime' || item.type === 'subscription') {
+        await applyBoost(item.id === 'doublexp' ? 'doubleXP' : item.id === 'doublerewards' ? 'doubleRewards' : item.id === 'doubleenergy' ? 'doubleEnergy' : item.id === 'extendedpass' ? 'extendedPass' : 'goldPass', item.duration || 0);
+      }
+      await InAppPurchases.finishTransactionAsync(results[0], true);
+      const updatedEnergy = await updateEnergy();
+      setEnergy(updatedEnergy);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Shop (Energy: {energy})</Text>
+      {shopItems.map((item, index) => (
+        <View key={index} style={styles.item}>
+          <Text style={styles.itemText}>{item.name} - ${item.price}</Text>
+          <TouchableOpacity style={styles.button} onPress={() => purchaseItem(item.id)}>
+            <Text style={styles.buttonText}>Buy</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#1a1a1a',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    color: '#fff',
+    fontFamily: 'monospace',
+    marginBottom: 20,
+  },
+  item: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  itemText: {
+    fontSize: 16,
+    color: '#fff',
+    fontFamily: 'monospace',
+  },
+  button: {
+    width: 100,
+    height: 40,
+    backgroundColor: '#ff4444',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontFamily: 'monospace',
+  },
+});
+
+Update Battle Screen with Energy and Boosts:
+Overwrite screens/BattleScreen.js:
+javascript
+
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import SvgUri from 'react-native-svg';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { startBattle, applyMove, enemyTurn, endBattle, getData, saveData, checkBoost, updateEnergy } from '../utils/battleLogic';
+
+export default function BattleScreen() {
+  const [team, setTeam] = useState([]);
+  const [enemy, setEnemy] = useState(null);
+  const [energy, setEnergy] = useState(0);
+  const [xp, setXP] = useState(0);
+  const moveX = useSharedValue(0);
+
+  useEffect(() => {
+    const initBattle = async () => {
+      const playerTeam = await getData('playerTeam');
+      setTeam(playerTeam);
+      const currentEnergy = await updateEnergy();
+      setEnergy(currentEnergy);
+      const isPlayPass = await checkBoost('extendedPass') || await checkBoost('goldPass');
+      if (currentEnergy >= 1 || isPlayPass) {
+        const newEnemy = await startBattle();
+        setEnemy(newEnemy);
+        if (!isPlayPass) {
+          const updatedEnergy = currentEnergy - 1;
+          setEnergy(updatedEnergy);
+          await saveData('energy', updatedEnergy);
+        }
+      }
+    };
+    initBattle();
+  }, []);
+
+  const animatedMoveStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: moveX.value }],
+  }));
+
+  const handleMove = async (move, character) => {
+    moveX.value = withTiming(100, { duration: 500 }, () => { moveX.value = withTiming(0); });
+    const updatedEnemy = await applyMove(move, enemy, character);
+    setEnemy(updatedEnemy);
+
+    if (updatedEnemy.hp <= 0) {
+      const { xp: battleXP, rewardCount } = await endBattle(true);
+      setXP(xp + battleXP);
+      // Placeholder for rewards
+    } else if (updatedEnemy.hp > 0) {
+      const enemyMove = enemyTurn(updatedEnemy);
+      const updatedTeam = team.map(t => t === character ? await applyMove(enemyMove, t, updatedEnemy) : t);
+      setTeam(updatedTeam);
+      await saveData('playerTeam', updatedTeam);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.energyText}>Energy: {energy} | XP: {xp}</Text>
+      {energy < 1 && !(await checkBoost('extendedPass') || await checkBoost('goldPass')) ? (
+        <Text style={styles.noEnergyText}>Out of Energy! Visit Shop to refill.</Text>
+      ) : (
+        <>
+          <View style={styles.teamContainer}>
+            {team.map((member, index) => (
+              <View key={index} style={styles.character}>
+                <SvgUri width="80" height="80" uri={member.svg} />
+                <Text style={styles.characterText}>{member.name} (HP: {member.hp})</Text>
+              </View>
+            ))}
+          </View>
+          {enemy && (
+            <View style={styles.enemyContainer}>
+              <SvgUri width="100" height="100" uri={enemy.svg} />
+              <Text style={styles.characterText}>{enemy.name} (HP: {enemy.hp})</Text>
+            </View>
+          )}
+          <View style={styles.movesContainer}>
+            {team[0]?.moves.map((move, index) => (
+              <Animated.View key={index} style={[styles.moveButton, animatedMoveStyle]}>
+                <TouchableOpacity onPress={() => handleMove(move, team[0])}>
+                  <Text style={styles.moveText}>{move.name}</Text>
+                </TouchableOpacity>
+              </Animated.View>
+            ))}
+          </View>
+        </>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#1a1a1a',
+    padding: 20,
+  },
+  energyText: {
+    fontSize: 20,
+    color: '#fff',
+    fontFamily: 'monospace',
+    marginBottom: 10,
+  },
+  noEnergyText: {
+    fontSize: 18,
+    color: '#ff4444',
+    fontFamily: 'monospace',
+    textAlign: 'center',
+  },
+  teamContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  enemyContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  character: {
+    alignItems: 'center',
+  },
+  characterText: {
+    fontSize: 16,
+    color: '#fff',
+    fontFamily: 'monospace',
+  },
+  movesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  moveButton: {
+    width: 100,
+    height: 40,
+    backgroundColor: '#4444ff',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  moveText: {
+    fontSize: 16,
+    color: '#fff',
+    fontFamily: 'monospace',
+  },
+});
+
+Update Main Menu with Rewarded Ads and Pass Status:
+Overwrite screens/MainMenu.js:
+javascript
+
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { AdMobRewarded } from 'expo-ads-admob';
+import { getData, saveData, applyBoost, updateEnergy, checkBoost } from '../utils/gameData';
+
+export default function MainMenu() {
+  const navigation = useNavigation();
+  const scalePlay = useSharedValue(1);
+  const scaleSettings = useSharedValue(1);
+  const scaleShop = useSharedValue(1);
+  const scaleAdEnergy = useSharedValue(1);
+  const scaleAdXP = useSharedValue(1);
+  const [energy, setEnergy] = useState(0);
+  const [hasPass, setHasPass] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const currentEnergy = await updateEnergy();
+      setEnergy(currentEnergy);
+      const hasExtendedPass = await checkBoost('extendedPass');
+      const hasGoldPass = await checkBoost('goldPass');
+      setHasPass(hasExtendedPass || hasGoldPass);
+    };
+    loadData();
+  }, []);
+
+  const animatedPlayStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scalePlay.value }],
+  }));
+  const animatedSettingsStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scaleSettings.value }],
+  }));
+  const animatedShopStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scaleShop.value }],
+  }));
+  const animatedAdEnergyStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scaleAdEnergy.value }],
+  }));
+  const animatedAdXPStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scaleAdXP.value }],
+  }));
+
+  const handlePressIn = (scale) => { scale.value = withSpring(0.95); };
+  const handlePressOut = (scale) => { scale.value = withSpring(1); };
+
+  const handleAdEnergy = async () => {
+    if (!hasPass) {
+      await AdMobRewarded.setAdUnitID(process.env.EXPO_PUBLIC_ADMOB_REWARD_ID);
+      await AdMobRewarded.requestAdAsync();
+      await AdMobRewarded.showAdAsync();
+      AdMobRewarded.addEventListener('rewarded', async () => {
+        const currentEnergy = await getData('energy');
+        const boosts = await getData('boosts');
+        const maxEnergy = (boosts.extendedPass ? 20 : 10) * (boosts.goldPass > Date.now() ? 3 : 1);
+        const newEnergy = Math.min(maxEnergy, currentEnergy + 5);
+        setEnergy(newEnergy);
+        await saveData('energy', newEnergy);
+      });
+    }
+  };
+
+  const handleAdXP = async () => {
+    if (!hasPass) {
+      await AdMobRewarded.setAdUnitID(process.env.EXPO_PUBLIC_ADMOB_REWARD_ID);
+      await AdMobRewarded.requestAdAsync();
+      await AdMobRewarded.showAdAsync();
+      AdMobRewarded.addEventListener('rewarded', async () => {
+        await applyBoost('doubleXP', 60 * 60 * 1000); // 1 hour
+      });
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.energyText}>Energy: {energy}</Text>
+      <Animated.View style={[styles.button, animatedPlayStyle]}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Game')}
+          onPressIn={() => handlePressIn(scalePlay)}
+          onPressOut={() => handlePressOut(scalePlay)}
+        >
+          <Text style={styles.buttonText}>Play</Text>
+        </TouchableOpacity>
+      </Animated.View>
+      <Animated.View style={[styles.button, animatedSettingsStyle]}>
+        <TouchableOpacity
+          onPress={() => {}}
+          onPressIn={() => handlePressIn(scaleSettings)}
+          onPressOut={() => handlePressOut(scaleSettings)}
+        >
+          <Text style={styles.buttonText}>Settings</Text>
+        </TouchableOpacity>
+      </Animated.View>
+      <Animated.View style={[styles.button, animatedShopStyle]}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Shop')}
+          onPressIn={() => handlePressIn(scaleShop)}
+          onPressOut={() => handlePressOut(scaleShop)}
+        >
+          <Text style={styles.buttonText}>Shop</Text>
+        </TouchableOpacity>
+      </Animated.View>
+      {!hasPass && (
+        <>
+          <Animated.View style={[styles.button, animatedAdEnergyStyle]}>
+            <TouchableOpacity
+              onPress={handleAdEnergy}
+              onPressIn={() => handlePressIn(scaleAdEnergy)}
+              onPressOut={() => handlePressOut(scaleAdEnergy)}
+            >
+              <Text style={styles.buttonText}>Ad: +5 Energy</Text>
+            </TouchableOpacity>
+          </Animated.View>
+          <Animated.View style={[styles.button, animatedAdXPStyle]}>
+            <TouchableOpacity
+              onPress={handleAdXP}
+              onPressIn={() => handlePressIn(scaleAdXP)}
+              onPressOut={() => handlePressOut(scaleAdXP)}
+            >
+              <Text style={styles.buttonText}>Ad: 1h XP Boost</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#1a1a1a',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  energyText: {
+    fontSize: 20,
+    color: '#fff',
+    fontFamily: 'monospace',
+    marginBottom: 20,
+  },
+  button: {
+    width: 200,
+    height: 60,
+    backgroundColor: '#ff4444',
+    borderRadius: 8,
+    marginVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 24,
+    color: '#fff',
+    fontFamily: 'monospace',
+  },
+});
+
+Update Navigation:
+Overwrite navigation/AppNavigator.js to include the Shop screen:
+javascript
+
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MainMenu from '../screens/MainMenu';
+import ExplorationMap from '../screens/ExplorationMap';
+import BattleScreen from '../screens/BattleScreen';
+import CollectionScreen from '../screens/CollectionScreen';
+import QuestsScreen from '../screens/QuestsScreen';
+import ShopScreen from '../screens/ShopScreen';
+
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const GameTabNavigator = () => (
+  <Tab.Navigator initialRouteName="Map" screenOptions={{ headerShown: false }}>
+    <Tab.Screen name="Map" component={ExplorationMap} />
+    <Tab.Screen name="Battle" component={BattleScreen} />
+    <Tab.Screen name="Collection" component={CollectionScreen} />
+    <Tab.Screen name="Quests" component={QuestsScreen} />
+    <Tab.Screen name="Shop" component={ShopScreen} />
+  </Tab.Navigator>
+);
+
+export default function AppNavigator() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="MainMenu" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="MainMenu" component={MainMenu} />
+        <Stack.Screen name="Game" component={GameTabNavigator} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+Execute and Verify Monetization:
+Execute npm install in the RPGGame directory to ensure all new dependencies (e.g., expo-in-app-purchases, expo-ads-admob) are installed.
+
+Execute expo start in the RPGGame directory to launch the Expo developer tools and verify monetization works.
+
+Simulate monetization by:
+Navigating to the Shop screen from Main Menu, triggering purchase flows (mocked with placeholders) for energy refill and passes.
+
+Clicking ad buttons on Main Menu (if no pass) to simulate energy and XP gains.
+
+Starting a battle to confirm energy deduction and boost effects (e.g., triple XP with Gold Pass).
+
+Save all generated and updated files in their respective directories (utils/, screens/, navigation/) as the foundation for subsequent development steps.
+
+Output Requirements
+Deliver the updated RPGGame project directory with all monetization features implemented and verified:
+New files: screens/ShopScreen.js.
+
+Updated files: .env, utils/gameData.js, utils/battleLogic.js, screens/BattleScreen.js, screens/MainMenu.js, navigation/AppNavigator.js.
+
+Update package.json to include new dependencies:
+Add to dependencies: "expo-in-app-purchases": "latest", "expo-ads-admob": "latest".
+
+Provide a confirmation message in the output: 'Monetization complete: RPGGame now includes time-saving in-app purchases and rewarded ads with Extended and Gold Play Passes. Run expo start from the RPGGame directory to test monetization features.'
+
+Ensure all commands have been executed, dependencies are installed, and the game is functional with expo start."
