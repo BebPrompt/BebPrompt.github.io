@@ -8,16 +8,69 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #2b2b2b; /* Dark gray background */
+            padding: 0;
+            background-color: #2b2b2b;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             min-height: 100vh;
         }
 
+        .sidebar {
+            width: 250px;
+            background-color: #1e1e1e;
+            padding: 20px;
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .sidebar h2 {
+            color: #ffffff;
+            font-size: 1.5em;
+            margin: 0 0 20px 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin: 10px 0;
+        }
+
+        .sidebar a {
+            color: #d4d4d4;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: block;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #333333;
+        }
+
+        .sidebar a.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 270px; /* Sidebar width + padding */
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         h1 {
-            color: #ffffff; /* White text for dark mode */
+            color: #ffffff;
             font-size: 2.5em;
             margin-bottom: 20px;
             text-align: center;
@@ -36,7 +89,6 @@
             font-size: 1em;
             white-space: pre-wrap;
             overflow-x: auto;
-            margin-bottom: 20px; /* Space between boxes */
         }
 
         .box-title {
@@ -68,16 +120,31 @@
             background-color: #004085;
         }
 
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.8em;
+        @media (max-width: 800px) {
+            .sidebar {
+                width: 200px;
             }
+            .main-content {
+                margin-left: 220px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+        }
 
+        @media (max-width: 600px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+            .main-content {
+                margin-left: 0;
+            }
             .code-box {
                 padding: 15px;
                 font-size: 0.9em;
             }
-
             .copy-btn {
                 padding: 6px 12px;
                 font-size: 0.8em;
@@ -86,67 +153,57 @@
     </style>
 </head>
 <body>
-    <h1>Prompts</h1>
-    <div id="promptsContainer"></div>
+    <div class="sidebar">
+        <h2>Prompts</h2>
+        <ul id="promptList"></ul>
+    </div>
+    <div class="main-content">
+        <div id="promptsContainer"></div>
+    </div>
 
     <script>
         const owner = 'BebPrompt';
         const repo = 'BebPrompt.github.io';
         const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/`;
+        const promptList = document.getElementById('promptList');
         const container = document.getElementById('promptsContainer');
+        let promptsData = {};
 
-        // Function to create a prompt box for each .txt file
-        function createPromptBox(filename, rawUrl) {
+        // Function to create and display a prompt box
+        function createPromptBox(filename, content) {
+            container.innerHTML = ''; // Clear existing content
+
             const box = document.createElement('div');
             box.className = 'code-box';
 
-            // Add title based on filename
             const title = document.createElement('div');
             title.className = 'box-title';
-            title.textContent = filename;
+            title.textContent = filename.replace('.txt', '');
             box.appendChild(title);
 
-            // Add copy button
             const copyBtn = document.createElement('button');
             copyBtn.className = 'copy-btn';
             copyBtn.textContent = 'Copy';
             box.appendChild(copyBtn);
 
-            // Add content area
-            const content = document.createElement('span');
-            content.id = `content-${filename.replace('.', '-')}`; // Unique ID
-            content.textContent = 'Loading...';
-            box.appendChild(content);
+            const contentSpan = document.createElement('span');
+            contentSpan.textContent = content;
+            box.appendChild(contentSpan);
 
-            // Fetch file content using raw URL
-            fetch(rawUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error('File not found');
-                    return response.text();
-                })
-                .then(text => {
-                    content.textContent = text;
-                })
-                .catch(error => {
-                    content.textContent = `Error: Could not load ${filename}`;
-                    console.error(error);
-                });
-
-            // Copy functionality
             copyBtn.addEventListener('click', () => {
-                navigator.clipboard.writeText(content.textContent)
+                navigator.clipboard.writeText(contentSpan.textContent)
                     .then(() => {
                         copyBtn.textContent = 'Copied!';
                         setTimeout(() => {
                             copyBtn.textContent = 'Copy';
-                        }, 2000); // Reset after 2 seconds
+                        }, 2000);
                     })
                     .catch(err => {
                         alert('Failed to copy: ' + err);
                     });
             });
 
-            return box;
+            container.appendChild(box);
         }
 
         // Fetch list of files from GitHub API
@@ -165,10 +222,44 @@
                     container.textContent = 'No .txt files found in the repository.';
                     return;
                 }
-                textFiles.forEach(file => {
-                    const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/${file.name}`;
-                    const promptBox = createPromptBox(file.name, rawUrl);
-                    container.appendChild(promptBox);
+
+                textFiles.forEach((file, index) => {
+                    const filename = file.name;
+                    const displayName = filename.replace('.txt', '');
+                    const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/${filename}`;
+
+                    // Fetch content and store it
+                    fetch(rawUrl)
+                        .then(response => {
+                            if (!response.ok) throw new Error('File not found');
+                            return response.text();
+                        })
+                        .then(text => {
+                            promptsData[filename] = text;
+
+                            // Create sidebar link
+                            const li = document.createElement('li');
+                            const a = document.createElement('a');
+                            a.href = '#';
+                            a.textContent = displayName;
+                            a.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                document.querySelectorAll('.sidebar a').forEach(link => link.classList.remove('active'));
+                                a.classList.add('active');
+                                createPromptBox(filename, promptsData[filename]);
+                            });
+                            li.appendChild(a);
+                            promptList.appendChild(li);
+
+                            // Load first prompt by default
+                            if (index === 0) {
+                                a.classList.add('active');
+                                createPromptBox(filename, text);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(`Error loading ${filename}:`, error);
+                        });
                 });
             })
             .catch(error => {
