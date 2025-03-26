@@ -1,0 +1,33 @@
+Build a complete landing page with a contact form for the SaaS app we’re building, using my exact tech stack and methods for creating successful websites, focusing on action and delivering all code.
+Your task is to create a fully functional landing page integrated with backend services, ready to run.
+
+Here’s what to do:
+Use Next.js with React for the frontend in app/page.js, Tailwind CSS and Daisy UI for styling (e.g., btn, card classes), and keep it responsive.
+
+Design the landing page:
+Hero Section: Headline ‘Start Using [Our App] Today’ (h1, bold, replace [Your App] with a placeholder), subtext ‘Unlock your potential with our tools’ (p), button ‘Get Started’ (links to /dashboard, Daisy UI btn-primary).
+
+Features Section: 3 cards (‘Core Feature’, ‘Insights’, ‘Motivation’) with icons from public/icons/ (assume feature.svg, insight.svg, motivate.svg exist).
+
+Contact Form: Fields (name: text, email: email, message: textarea), submit button (btn-success), submits to /api/email.
+
+Create a backend API in app/api/email/route.js:
+Use Resend to send an email with form data (e.g., to: 'admin@example.com', subject: 'New Contact', text: 'Name: ${name}, Email: ${email}, Message: ${message}').
+
+Return { success: true } on success, { error: 'Failed' } on failure.
+
+Add navigation in components/Navbar.js:
+Links: ‘Home’ (/), ‘Dashboard’ (/dashboard), ‘Sign Up’ (Auth.js Google login redirect).
+
+Use Daisy UI navbar and btn classes.
+
+Integrate DataDog in app/layout.js:
+Add <script> tag to initialize DataDog RUM (datadogRum.init) with placeholders for applicationId and clientToken from .env.local.
+
+Wrap page content in a <main> tag with Tailwind styling (e.g., max-w-7xl mx-auto).
+
+Use environment variables: RESEND_API_KEY, DATADOG_APPLICATION_ID, DATADOG_CLIENT_TOKEN, AUTH_SECRET, etc.
+
+Generate files: app/page.js, app/api/email/route.js, components/Navbar.js, app/layout.js.
+
+Output Format: Deliver all code files (app/page.js, app/api/email/route.js, components/Navbar.js, app/layout.js) with complete, functional code, ready to run with npm run dev. Provide only the finished product.

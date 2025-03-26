@@ -1,0 +1,31 @@
+Set up my Windows computer for developing the SaaS app we’re building, using the exact tools and process for creating successful web apps, focusing on action and delivering a complete setup script. Assume I’m on a fresh Windows system.
+Your task is to provide all commands and configurations to prepare the environment for a tech stack with JavaScript, React, Next.js, Tailwind CSS, Daisy UI, MongoDB, Auth.js, Resend, Stripe, and DataDog.
+
+Here’s what to do:
+For each of the following, check if they are already installed. If they are, we won't need to install them.
+
+Install Node.js (latest LTS, e.g., 20.x.x) using the official Windows installer command via PowerShell (winget install OpenJS.NodeJS.LTS).
+
+Install Git for version control using winget install Git.Git.
+
+Install MongoDB Community Edition (latest) using winget install MongoDB.Server and configure it to run as a service with mongod --install and net start MongoDB.
+
+Verify installations with commands: node -v, npm -v, git --version, mongo --version.
+
+Configure the environment:
+Initialize a new Next.js project with npx create-next-app@latest my-saas-app --use-npm --eslint --tailwind --app --no-src-dir --import-alias '@/*' (yes to all prompts except TypeScript and custom alias).
+
+Navigate into the project folder with cd my-saas-app.
+
+Install additional dependencies: npm install mongodb @auth/core resend @stripe/stripe-js stripe @datadog/browser-rum daisyui.
+
+Configure Tailwind CSS and Daisy UI by updating tailwind.config.js to include require('daisyui') in plugins.
+
+Create a .env.local file template with placeholders for API keys:
+AUTH_SECRET=, AUTH_GOOGLE_ID=, AUTH_GOOGLE_SECRET= (for Auth.js),
+
+MONGODB_URI=, RESEND_API_KEY=, STRIPE_SECRET_KEY=, STRIPE_WEBHOOK_SECRET=, DATADOG_APPLICATION_ID=, DATADOG_CLIENT_TOKEN=.
+
+Provide a single PowerShell script (setup.ps1) with all commands in sequence, including comments (e.g., # Install Node.js), to run everything at once.
+
+Output Format: Deliver a setup.ps1 script and a .env.local template. Provide only the executable files, no explanations.

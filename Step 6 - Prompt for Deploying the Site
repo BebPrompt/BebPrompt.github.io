@@ -1,0 +1,29 @@
+Deploy the SaaS app we’re building to Vercel, focusing on action and delivering all files and commands.
+Your task is to prepare and deploy the project, assuming the landing page and other components are built.
+
+Here’s what to do:
+Configure Next.js for Vercel:
+Create vercel.json with { "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }] } to handle API routes.
+
+List environment variables: NEXTAUTH_URL, AUTH_SECRET, AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, MONGODB_URI, RESEND_API_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, DATADOG_APPLICATION_ID, DATADOG_CLIENT_TOKEN (placeholders).
+
+Set up Git:
+Create .gitignore with: node_modules, .env.local, .vercel, *.log.
+
+Provide commands: git init, git add ., git commit -m "Deploy SaaS app to Vercel".
+
+Push to GitHub:
+Commands: git remote add origin <your-repo-url>, git branch -M main, git push -u origin main (assume I’ll replace <your-repo-url>).
+
+Deploy to Vercel:
+Install Vercel CLI: npm i -g vercel.
+
+Link and deploy: vercel, vercel --prod.
+
+Add environment variables via Vercel dashboard (list above keys with instructions to paste values).
+
+Verify with vercel --open.
+
+Deliver a PowerShell script (deploy.ps1) with all commands in sequence, including comments (e.g., # Initialize Git).
+
+Output Format: Deliver vercel.json, .gitignore, and a deploy.ps1 script with all commands, ready to execute. Provide only the deployment package.
