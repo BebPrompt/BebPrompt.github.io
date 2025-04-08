@@ -276,11 +276,146 @@
     </div>
 
     <script>
-        // Structure to store our data
-        const library = {};
+        // Structure to store our data with hardcoded files
+        const library = {
+            'Penelope': {
+                'Original': [
+                    {
+                        name: 'Tantric_JOIHFO_with_Penelope_No_Awakener',
+                        audioPath: 'Penelope/Original/Tantric_JOIHFO_with_Penelope_No_Awakener.mp3',
+                        descPath: 'Penelope/Original/Tantric_JOIHFO_with_Penelope_No_Awakener.txt'
+                    },
+                    {
+                        name: 'Tantric_JOIHFO_with_Penelope',
+                        audioPath: 'Penelope/Original/Tantric_JOIHFO_with_Penelope.mp3',
+                        descPath: 'Penelope/Original/Tantric_JOIHFO_with_Penelope.txt'
+                    },
+                    {
+                        name: 'Penelopes_Spell_-_No_Binaurals',
+                        audioPath: 'Penelope/Original/Penelopes_Spell_-_No_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Penelopes_Spell_-_No_Binaurals.txt'
+                    },
+                    {
+                        name: 'Penelopes_Spell_-_Sleep_Version_With_Binaurals',
+                        audioPath: 'Penelope/Original/Penelopes_Spell_-_Sleep_Version_With_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Penelopes_Spell_-_Sleep_Version_With_Binaurals.txt'
+                    },
+                    {
+                        name: 'Angel_of_Your_Dreams_-_With_Binaurals',
+                        audioPath: 'Penelope/Original/Angel_of_Your_Dreams_-_With_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Angel_of_Your_Dreams_-_With_Binaurals.txt'
+                    },
+                    {
+                        name: 'Angel_of_Your_Dreams_-_Without_Binaurals',
+                        audioPath: 'Penelope/Original/Angel_of_Your_Dreams_-_Without_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Angel_of_Your_Dreams_-_Without_Binaurals.txt'
+                    },
+                    {
+                        name: 'Tick_Tock_HFO_with_binaurals',
+                        audioPath: 'Penelope/Original/Tick_Tock_HFO_with_binaurals.mp3',
+                        descPath: 'Penelope/Original/Tick_Tock_HFO_with_binaurals.txt'
+                    },
+                    {
+                        name: 'Tick_Tock_HFO_without_binaurals',
+                        audioPath: 'Penelope/Original/Tick_Tock_HFO_without_binaurals.mp3',
+                        descPath: 'Penelope/Original/Tick_Tock_HFO_without_binaurals.txt'
+                    },
+                    {
+                        name: 'Hitch-Hiker_HFO_with_car_ambiance_binaurals',
+                        audioPath: 'Penelope/Original/Hitch-Hiker_HFO_with_car_ambiance_binaurals.mp3',
+                        descPath: 'Penelope/Original/Hitch-Hiker_HFO_with_car_ambiance_binaurals.txt'
+                    },
+                    {
+                        name: 'Hitch-Hiker_HFO_with_car_ambiance_and_no_binaurals',
+                        audioPath: 'Penelope/Original/Hitch-Hiker_HFO_with_car_ambiance_and_no_binaurals.mp3',
+                        descPath: 'Penelope/Original/Hitch-Hiker_HFO_with_car_ambiance_and_no_binaurals.txt'
+                    },
+                    {
+                        name: 'Falling_Further_Under_My_Spell_-_Awaken_version_-_No_Binaurals',
+                        audioPath: 'Penelope/Original/Falling_Further_Under_My_Spell_-_Awaken_version_-_No_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Falling_Further_Under_My_Spell_-_Awaken_version_-_No_Binaurals.txt'
+                    },
+                    {
+                        name: 'Falling_Further_Under_My_Spell_-_Free_version_-_Binaural_Beats_-_No_Awakener',
+                        audioPath: 'Penelope/Original/Falling_Further_Under_My_Spell_-_Free_version_-_Binaural_Beats_-_No_Awakener.mp3',
+                        descPath: 'Penelope/Original/Falling_Further_Under_My_Spell_-_Free_version_-_Binaural_Beats_-_No_Awakener.txt'
+                    },
+                    {
+                        name: 'Falling_Further_Under_My_Spell_-_No_Awakener_-_With_Binaurals',
+                        audioPath: 'Penelope/Original/Falling_Further_Under_My_Spell_-_No_Awakener_-_With_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Falling_Further_Under_My_Spell_-_No_Awakener_-_With_Binaurals.txt'
+                    },
+                    {
+                        name: 'Beyond_the_Trance_-_With_Music_-_No_Binaurals',
+                        audioPath: 'Penelope/Original/Beyond_the_Trance_-_With_Music_-_No_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Beyond_the_Trance_-_With_Music_-_No_Binaurals.txt'
+                    },
+                    {
+                        name: 'Tantric_Breathing_guide_-_No_Awakener_-_With_Binaurals',
+                        audioPath: 'Penelope/Original/Tantric_Breathing_guide_-_No_Awakener_-_With_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Tantric_Breathing_guide_-_No_Awakener_-_With_Binaurals.txt'
+                    },
+                    {
+                        name: 'Tantric_Breathing_Guide_-_Awaken_version_-_Without_Binaurals',
+                        audioPath: 'Penelope/Original/Tantric_Breathing_Guide_-_Awaken_version_-_Without_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Tantric_Breathing_Guide_-_Awaken_version_-_Without_Binaurals.txt'
+                    },
+                    {
+                        name: 'Mind_Melting_Whispers_HFO_-_with_Binaurals',
+                        audioPath: 'Penelope/Original/Mind_Melting_Whispers_HFO_-_with_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Mind_Melting_Whispers_HFO_-_with_Binaurals.txt'
+                    },
+                    {
+                        name: 'Loop_-_Mind_Melting_Whispers_HFO_Loop-_with_Binaurals',
+                        audioPath: 'Penelope/Original/Loop_-_Mind_Melting_Whispers_HFO_Loop-_with_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Loop_-_Mind_Melting_Whispers_HFO_Loop-_with_Binaurals.txt'
+                    },
+                    {
+                        name: 'Gym_Instructor_gives_you_your_own_personal_training_session_-_no_binaurals',
+                        audioPath: 'Penelope/Original/Gym_Instructor_gives_you_your_own_personal_training_session_-_no_binaurals.mp3',
+                        descPath: 'Penelope/Original/Gym_Instructor_gives_you_your_own_personal_training_session_-_no_binaurals.txt'
+                    },
+                    {
+                        name: 'Gym_Instructor_gives_you_your_own_personal_training_session_-_with_binaurals',
+                        audioPath: 'Penelope/Original/Gym_Instructor_gives_you_your_own_personal_training_session_-_with_binaurals.mp3',
+                        descPath: 'Penelope/Original/Gym_Instructor_gives_you_your_own_personal_training_session_-_with_binaurals.txt'
+                    },
+                    {
+                        name: 'Gym_Health_Motivation_Loop_-_Without_Binaurals',
+                        audioPath: 'Penelope/Original/Gym_Health_Motivation_Loop_-_Without_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Gym_Health_Motivation_Loop_-_Without_Binaurals.txt'
+                    },
+                    {
+                        name: 'Gym_Health_Motivation_Loop_-_With_Binaurals',
+                        audioPath: 'Penelope/Original/Gym_Health_Motivation_Loop_-_With_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Gym_Health_Motivation_Loop_-_With_Binaurals.txt'
+                    },
+                    {
+                        name: 'Gentle_Succubus_-_Wet_Dream_-_Without_Binaurals',
+                        audioPath: 'Penelope/Original/Gentle_Succubus_-_Wet_Dream_-_Without_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Gentle_Succubus_-_Wet_Dream_-_Without_Binaurals.txt'
+                    },
+                    {
+                        name: 'Gentle_Succubus_Wet_Dream_-_With_Binaurals',
+                        audioPath: 'Penelope/Original/Gentle_Succubus_Wet_Dream_-_With_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Gentle_Succubus_Wet_Dream_-_With_Binaurals.txt'
+                    },
+                    {
+                        name: 'Popping_at_the_Coffee_Shop_-_With_Binaurals',
+                        audioPath: 'Penelope/Original/Popping_at_the_Coffee_Shop_-_With_Binaurals.mp3',
+                        descPath: 'Penelope/Original/Popping_at_the_Coffee_Shop_-_With_Binaurals.txt'
+                    }
+                ],
+                'Therapy': [],
+                'Dominatrix': [],
+                'Teacher': [],
+                'Loops': [],
+                'Fills': []
+            }
+        };
+
         let currentArtist = '';
         let currentCategory = '';
-        let currentFile = '';
 
         // Toggle sidebar
         const sidebar = document.getElementById('sidebar');
@@ -319,60 +454,6 @@
                 sidebarToggle.classList.remove('mobile-expanded');
             }
         });
-
-        // Function to scan the directory structure
-        async function scanLibrary() {
-            try {
-                // Fetch list of artists
-                const artistsResponse = await fetch('');
-                const artistsData = await artistsResponse.json();
-                
-                // For now, we're hard-coding Penelope as the artist since that's what we see
-                const artists = ['Penelope'];
-                
-                for (const artist of artists) {
-                    library[artist] = {};
-                    
-                    // Fetch categories for each artist
-                    const categoriesResponse = await fetch(`${artist}/`);
-                    const categoriesData = await categoriesResponse.text();
-                    
-                    // For Penelope, we know the categories from our directory exploration
-                    const categories = ['Original', 'Therapy', 'Dominatrix', 'Teacher', 'Loops', 'Fills'];
-                    
-                    for (const category of categories) {
-                        library[artist][category] = [];
-                        
-                        // Fetch files in each category
-                        const filesResponse = await fetch(`${artist}/${category}/`);
-                        const filesHtml = await filesResponse.text();
-                        
-                        // Since we can't directly list files this way with GitHub Pages,
-                        // we'll load them dynamically when a category is selected
-                    }
-                }
-                
-                renderSidebar();
-            } catch (error) {
-                console.error('Error scanning library:', error);
-                // If fetch fails, we'll use a more direct approach
-                loadHardcodedStructure();
-            }
-        }
-
-        // Function to load a hardcoded structure since we can't scan directories with client-side JS
-        function loadHardcodedStructure() {
-            library['Penelope'] = {
-                'Original': [],
-                'Therapy': [],
-                'Dominatrix': [],
-                'Teacher': [],
-                'Loops': [],
-                'Fills': []
-            };
-            
-            renderSidebar();
-        }
 
         // Function to render the sidebar
         function renderSidebar() {
@@ -435,36 +516,22 @@
             const audioList = document.getElementById('audio-list');
             
             try {
-                // In a real environment, we would fetch the directory listing
-                // Since we can't do that with GitHub Pages, we'll manually load the files
-                const fileList = await fetchFilesForCategory(artist, category);
+                // Use the hardcoded files instead of fetching from GitHub API
+                const files = library[artist][category];
                 
-                // Group files by base name (without extension)
-                const fileGroups = {};
+                if (files.length === 0) {
+                    audioList.innerHTML = '<p>No audio files found in this category.</p>';
+                    return;
+                }
                 
-                fileList.forEach(file => {
-                    const baseName = file.name.substring(0, file.name.lastIndexOf('.'));
-                    if (!fileGroups[baseName]) {
-                        fileGroups[baseName] = {
-                            audio: null,
-                            description: null
-                        };
-                    }
-                    
-                    if (file.name.endsWith('.mp3')) {
-                        fileGroups[baseName].audio = file.path;
-                    } else if (file.name.endsWith('.txt')) {
-                        fileGroups[baseName].description = file.path;
-                    }
-                });
-                
-                // Create a card for each audio file with its description
-                for (const baseName in fileGroups) {
-                    const group = fileGroups[baseName];
-                    
-                    if (group.audio && group.description) {
+                // Process each file
+                for (const file of files) {
+                    try {
                         // Fetch the description text
-                        const descResponse = await fetch(group.description);
+                        const descResponse = await fetch(file.descPath);
+                        if (!descResponse.ok) {
+                            throw new Error(`Failed to fetch description for ${file.name}`);
+                        }
                         const descText = await descResponse.text();
                         
                         // Create an audio card
@@ -474,7 +541,7 @@
                         // Create title and description elements
                         const titleElement = document.createElement('h2');
                         titleElement.className = 'audio-title';
-                        titleElement.textContent = baseName.replace(/_/g, ' ');
+                        titleElement.textContent = file.name.replace(/_/g, ' ');
                         
                         const descriptionElement = document.createElement('div');
                         descriptionElement.className = 'audio-description';
@@ -486,7 +553,7 @@
                         
                         const audioElement = document.createElement('audio');
                         audioElement.controls = true;
-                        audioElement.src = group.audio;
+                        audioElement.src = file.audioPath;
                         
                         const loopButton = document.createElement('button');
                         loopButton.className = 'loop-button';
@@ -506,11 +573,9 @@
                         card.appendChild(audioPlayerContainer);
                         
                         audioList.appendChild(card);
+                    } catch (error) {
+                        console.error(`Error loading file ${file.name}:`, error);
                     }
-                }
-                
-                if (audioList.children.length === 0) {
-                    audioList.innerHTML = '<p>No audio files found in this category.</p>';
                 }
                 
             } catch (error) {
@@ -519,28 +584,6 @@
                     <h1>${artist} - ${category}</h1>
                     <p>Error loading audio files. Please try again later.</p>
                 `;
-            }
-        }
-
-        // Function to fetch files for a category
-        async function fetchFilesForCategory(artist, category) {
-            // In a real environment, we would fetch this from an API
-            // For GitHub Pages, we'll use a simulated API call
-            
-            try {
-                const response = await fetch(`https://api.github.com/repos/BebPrompt/BebPrompt.github.io/contents/${artist}/${category}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch directory contents');
-                }
-                const data = await response.json();
-                
-                return data.map(item => ({
-                    name: item.name,
-                    path: item.download_url
-                }));
-            } catch (error) {
-                console.error('Error fetching files:', error);
-                return [];
             }
         }
 
@@ -567,7 +610,7 @@
 
         // Initialize the library
         document.addEventListener('DOMContentLoaded', () => {
-            loadHardcodedStructure();
+            renderSidebar();
             
             // Expand first artist by default
             setTimeout(() => {
