@@ -130,7 +130,7 @@
 
         .main-content {
             margin-left: 280px;
-            padding: 20px;
+            padding: 60px 20px 20px 20px;
             flex-grow: 1;
             transition: margin-left 0.3s ease;
         }
@@ -190,26 +190,36 @@
             background-color: var(--secondary-color);
         }
 
-        .breadcrumb {
-            margin-bottom: 20px;
-            padding: 10px;
+        .audio-player-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .audio-player-container audio {
+            flex-grow: 1;
+            margin-bottom: 0;
+        }
+
+        .loop-button {
             background-color: var(--card-bg);
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            color: var(--text-color);
             border: 1px solid var(--border-color);
+            border-radius: 4px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            font-size: 1.1rem;
         }
 
-        .breadcrumb a {
-            color: var(--secondary-color);
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            margin: 0 5px;
+        .loop-button.active {
+            background-color: var(--primary-color);
+            color: white;
         }
 
         h1, h2, h3 {
@@ -259,9 +269,6 @@
     <button id="sidebarToggle" class="sidebar-toggle">☰</button>
     
     <div class="main-content" id="mainContent">
-        <div class="breadcrumb" id="breadcrumb">
-            Home
-        </div>
         <div id="audioContainer">
             <h1>Welcome to the Audio Library</h1>
             <p>Select an artist and category from the sidebar to browse audio files.</p>
@@ -422,7 +429,6 @@
         async function loadCategory(artist, category) {
             currentArtist = artist;
             currentCategory = category;
-            updateBreadcrumb();
             
             const audioContainer = document.getElementById('audioContainer');
             audioContainer.innerHTML = `<h1>${artist} - ${category}</h1><div id="audio-list"></div>`;
@@ -464,11 +470,40 @@
                         // Create an audio card
                         const card = document.createElement('div');
                         card.className = 'audio-card';
-                        card.innerHTML = `
-                            <h2 class="audio-title">${baseName.replace(/_/g, ' ')}</h2>
-                            <div class="audio-description">${descText}</div>
-                            <audio controls src="${group.audio}"></audio>
-                        `;
+                        
+                        // Create title and description elements
+                        const titleElement = document.createElement('h2');
+                        titleElement.className = 'audio-title';
+                        titleElement.textContent = baseName.replace(/_/g, ' ');
+                        
+                        const descriptionElement = document.createElement('div');
+                        descriptionElement.className = 'audio-description';
+                        descriptionElement.textContent = descText;
+                        
+                        // Create audio player with loop button
+                        const audioPlayerContainer = document.createElement('div');
+                        audioPlayerContainer.className = 'audio-player-container';
+                        
+                        const audioElement = document.createElement('audio');
+                        audioElement.controls = true;
+                        audioElement.src = group.audio;
+                        
+                        const loopButton = document.createElement('button');
+                        loopButton.className = 'loop-button';
+                        loopButton.innerHTML = '🔁';
+                        loopButton.title = 'Toggle Loop';
+                        loopButton.addEventListener('click', () => {
+                            audioElement.loop = !audioElement.loop;
+                            loopButton.classList.toggle('active', audioElement.loop);
+                        });
+                        
+                        // Add elements to the card
+                        audioPlayerContainer.appendChild(audioElement);
+                        audioPlayerContainer.appendChild(loopButton);
+                        
+                        card.appendChild(titleElement);
+                        card.appendChild(descriptionElement);
+                        card.appendChild(audioPlayerContainer);
                         
                         audioList.appendChild(card);
                     }
@@ -509,27 +544,10 @@
             }
         }
 
-        // Function to update breadcrumb
-        function updateBreadcrumb() {
-            const breadcrumb = document.getElementById('breadcrumb');
-            let html = '<a href="#" onclick="navigateHome(); return false;">Home</a>';
-            
-            if (currentArtist) {
-                html += ` <span>›</span> <a href="#" onclick="navigateArtist('${currentArtist}'); return false;">${currentArtist}</a>`;
-            }
-            
-            if (currentCategory) {
-                html += ` <span>›</span> ${currentCategory}`;
-            }
-            
-            breadcrumb.innerHTML = html;
-        }
-
         // Navigation functions
         function navigateHome() {
             currentArtist = '';
             currentCategory = '';
-            updateBreadcrumb();
             
             document.getElementById('audioContainer').innerHTML = `
                 <h1>Welcome to the Audio Library</h1>
@@ -540,7 +558,6 @@
         function navigateArtist(artist) {
             currentArtist = artist;
             currentCategory = '';
-            updateBreadcrumb();
             
             document.getElementById('audioContainer').innerHTML = `
                 <h1>${artist}</h1>
