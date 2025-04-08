@@ -7,7 +7,8 @@ A simple web-based audio library that organizes audio files by artist and catego
 - Hierarchical organization by artist and category
 - Audio playback with standard HTML5 audio controls
 - Display of text descriptions for each audio file
-- Download functionality for audio files
+- Dark mode UI for comfortable viewing
+- Collapsible sidebar for maximizing content space
 - Responsive design for desktop and mobile devices
 
 ## How It Works
@@ -15,7 +16,7 @@ A simple web-based audio library that organizes audio files by artist and catego
 1. The website loads a structure of artists and categories from the filesystem
 2. When a category is selected, it loads all audio files and their corresponding text descriptions
 3. Audio files and descriptions are paired based on matching filenames
-4. Audio can be played directly in the browser or downloaded
+4. Audio can be played directly in the browser
 
 ## File Structure
 
@@ -24,6 +25,7 @@ The expected file structure is:
 ```
 /
 ├── index.html
+├── 404.html
 ├── README.md
 └── [Artist Name]/
     └── [Category Name]/
@@ -61,4 +63,5 @@ npx http-server
 
 - The site uses the GitHub API to fetch directory contents
 - No external JavaScript libraries are required
-- Audio playback uses the native HTML5 audio element 
+- Audio playback uses the native HTML5 audio element
+- The sidebar can be toggled to maximize screen space, particularly useful on mobile devices 
