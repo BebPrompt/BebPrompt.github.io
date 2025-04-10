@@ -1,0 +1,20 @@
+{
+  "category": "Vote",
+  "files": [
+    {
+      "name": "Announcing My Candidacy(Patreon)",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Vote/Announcing%20My%20Candidacy%28Patreon%29.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Vote/Announcing%20My%20Candidacy%28Patreon%29.txt"
+    },
+    {
+      "name": "Calia's Manifesto(Patreon)",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Vote/Calia%27s%20Manifesto%28Patreon%29.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Vote/Calia%27s%20Manifesto%28Patreon%29.txt"
+    },
+    {
+      "name": "Interview with the Candidate Quickie(Patreon)",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Vote/Interview%20with%20the%20Candidate%20Quickie%28Patreon%29.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Vote/Interview%20with%20the%20Candidate%20Quickie%28Patreon%29.txt"
+    }
+  ]
+}

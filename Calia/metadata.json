@@ -10,12 +10,24 @@
       "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/CaliaStation/category.json"
     },
     {
+      "name": "Cult",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Cult/category.json"
+    },
+    {
+      "name": "Curse",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Curse/category.json"
+    },
+    {
       "name": "Education",
       "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Education/category.json"
     },
     {
       "name": "Fantasy",
       "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Fantasy/category.json"
+    },
+    {
+      "name": "Girlfriend",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Girlfriend/category.json"
     },
     {
       "name": "HFO",
@@ -56,6 +68,10 @@
     {
       "name": "University",
       "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/University/category.json"
+    },
+    {
+      "name": "Vote",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Vote/category.json"
     }
   ]
 }
