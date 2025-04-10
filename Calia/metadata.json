@@ -1,0 +1,25 @@
+{
+  "artist": "Calia",
+  "categories": [
+    {
+      "name": "CaliaCorp",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/CaliaCorp/category.json"
+    },
+    {
+      "name": "Obsession",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Obsession/category.json"
+    },
+    {
+      "name": "Slave Training",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Slave%20Training/category.json"
+    },
+    {
+      "name": "Ultra",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/Ultra/category.json"
+    },
+    {
+      "name": "University",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/University/category.json"
+    }
+  ]
+}

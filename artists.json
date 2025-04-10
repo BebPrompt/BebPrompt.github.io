@@ -1,8 +1,12 @@
 {
   "artists": [
     {
+      "name": "Calia",
+      "metadataPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Calia/metadata.json"
+    },
+    {
       "name": "Penelope",
       "metadataPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/metadata.json"
     }
   ]
-} 
+}

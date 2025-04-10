@@ -2,19 +2,39 @@
   "category": "Therapy",
   "files": [
     {
-      "name": "Therapy_with_Penelope_-_Part_One_-_Awake_Version",
-      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_One_-_Awake_Version.mp3",
-      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_One_-_Awake_Version.txt"
+      "name": "The Psychology of Resistance - Therapy With Penelope Part 5 - Without Binaurals",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The%20Psychology%20of%20Resistance%20-%20Therapy%20With%20Penelope%20Part%205%20-%20Without%20Binaurals.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The%20Psychology%20of%20Resistance%20-%20Therapy%20With%20Penelope%20Part%205%20-%20Without%20Binaurals.txt"
     },
     {
-      "name": "Therapy_with_Penelope_-_Part_one",
-      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_one.mp3",
-      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_one.txt"
+      "name": "The Psychology of Resistance - Therapy with Penelope Part 5 (with binaurals)",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The%20Psychology%20of%20Resistance%20-%20Therapy%20with%20Penelope%20Part%205%20%28with%20binaurals%29.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The%20Psychology%20of%20Resistance%20-%20Therapy%20with%20Penelope%20Part%205%20%28with%20binaurals%29.txt"
     },
     {
-      "name": "Therapy_with_Penelope_-_Part_Two",
-      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_Two.mp3",
-      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_Two.txt"
+      "name": "Therapy With Penelope - Part 2 (No Binaurals with Awakener)",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy%20With%20Penelope%20-%20Part%202%20%28No%20Binaurals%20with%20Awakener%29.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy%20With%20Penelope%20-%20Part%202%20%28No%20Binaurals%20with%20Awakener%29.txt"
+    },
+    {
+      "name": "Therapy with Penelope - Part 3 (with binaurals)",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy%20with%20Penelope%20-%20Part%203%20%28with%20binaurals%29.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy%20with%20Penelope%20-%20Part%203%20%28with%20binaurals%29.txt"
+    },
+    {
+      "name": "Therapy with Penelope - Part 3 Awake version (no Binaurals)",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy%20with%20Penelope%20-%20Part%203%20Awake%20version%20%28no%20Binaurals%29.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy%20with%20Penelope%20-%20Part%203%20Awake%20version%20%28no%20Binaurals%29.txt"
+    },
+    {
+      "name": "Therapy with Penelope - Part 4 (No binaurals)",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy%20with%20Penelope%20-%20Part%204%20%28No%20binaurals%29.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy%20with%20Penelope%20-%20Part%204%20%28No%20binaurals%29.txt"
+    },
+    {
+      "name": "Therapy with Penelope - Part 4 (with binaurals)",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy%20with%20Penelope%20-%20Part%204%20%28with%20binaurals%29.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy%20with%20Penelope%20-%20Part%204%20%28with%20binaurals%29.txt"
     },
     {
       "name": "Therapy_with_Penelope_-_Feel_my_Touch",
@@ -22,39 +42,19 @@
       "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Feel_my_Touch.txt"
     },
     {
-      "name": "Therapy With Penelope - Part 2 (No Binaurals with Awakener)",
-      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy With Penelope - Part 2 (No Binaurals with Awakener).mp3",
-      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy With Penelope - Part 2 (No Binaurals with Awakener).txt"
+      "name": "Therapy_with_Penelope_-_Part_One_-_Awake_Version",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_One_-_Awake_Version.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_One_-_Awake_Version.txt"
     },
     {
-      "name": "Therapy with Penelope - Part 3 (with binaurals)",
-      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 3 (with binaurals).mp3",
-      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 3 (with binaurals).txt"
+      "name": "Therapy_with_Penelope_-_Part_Two",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_Two.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_Two.txt"
     },
     {
-      "name": "Therapy with Penelope - Part 3 Awake version (no Binaurals)",
-      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 3 Awake version (no Binaurals).mp3",
-      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 3 Awake version (no Binaurals).txt"
-    },
-    {
-      "name": "Therapy with Penelope - Part 4 (with binaurals)",
-      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 4 (with binaurals).mp3",
-      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 4 (with binaurals).txt"
-    },
-    {
-      "name": "Therapy with Penelope - Part 4 (No binaurals)",
-      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 4 (No binaurals).mp3",
-      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 4 (No binaurals).txt"
-    },
-    {
-      "name": "The Psychology of Resistance - Therapy with Penelope Part 5 (with binaurals)",
-      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The Psychology of Resistance - Therapy with Penelope Part 5 (with binaurals).mp3",
-      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The Psychology of Resistance - Therapy with Penelope Part 5 (with binaurals).txt"
-    },
-    {
-      "name": "The Psychology of Resistance - Therapy With Penelope Part 5 - Without Binaurals",
-      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The Psychology of Resistance - Therapy With Penelope Part 5 - Without Binaurals.mp3",
-      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The Psychology of Resistance - Therapy With Penelope Part 5 - Without Binaurals.txt"
+      "name": "Therapy_with_Penelope_-_Part_one",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_one.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_one.txt"
     }
   ]
-} 
+}
