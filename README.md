@@ -1,67 +1,83 @@
-# Audio Library
+# BebPrompt Audio Library
 
-A simple web-based audio library that organizes audio files by artist and category. This site allows users to browse, play, and download audio files along with their descriptions.
+This repository contains an audio library website for BebPrompt, organized with a JSON-based dynamic loading system.
 
-## Features
+## Project Structure
 
-- Hierarchical organization by artist and category
-- Audio playback with standard HTML5 audio controls
-- Display of text descriptions for each audio file
-- Dark mode UI for comfortable viewing
-- Collapsible sidebar for maximizing content space
-- Responsive design for desktop and mobile devices
+The project follows this directory structure:
+
+```
+BebPrompt.github.io/
+├── index.html           # The main website
+├── artists.json         # List of all artists with metadata links
+├── update_json.py       # Script to update all JSON files
+├── README.md            # This file
+├── [Artist1]/           # Artist directory (e.g., Penelope)
+│   ├── metadata.json    # Artist metadata with categories
+│   ├── [Category1]/     # Category directory (e.g., Original)
+│   │   ├── category.json # Category data with file listings
+│   │   ├── file1.mp3    # Audio files
+│   │   ├── file1.txt    # Description files (matching audio filenames)
+│   │   └── ...
+│   ├── [Category2]/
+│   │   └── ...
+│   └── ...
+└── [Artist2]/
+    └── ...
+```
 
 ## How It Works
 
-1. The website loads a structure of artists and categories from the filesystem
-2. When a category is selected, it loads all audio files and their corresponding text descriptions
-3. Audio files and descriptions are paired based on matching filenames
-4. Audio can be played directly in the browser
+1. The website loads `artists.json` to get a list of all artists
+2. For each artist, it loads their `metadata.json` to get categories
+3. When a category is selected, it loads the corresponding `category.json`
+4. Audio files and their descriptions are displayed based on the category data
 
-## File Structure
+## Updating the Library
 
-The expected file structure is:
+### Adding New Content
 
-```
-/
-├── index.html
-├── 404.html
-├── README.md
-└── [Artist Name]/
-    └── [Category Name]/
-        ├── audio_file_1.mp3
-        ├── audio_file_1.txt
-        ├── audio_file_2.mp3
-        ├── audio_file_2.txt
-        └── ...
-```
+To add new content to the library:
 
-## Hosting on GitHub Pages
+1. Place audio files in the appropriate artist/category directory
+2. Create matching `.txt` files with the same name for descriptions
+3. Run the update script to regenerate all JSON files
 
-This site is designed to be hosted directly on GitHub Pages. After pushing to GitHub:
+### Using the Update Script
 
-1. Go to your repository settings
-2. Navigate to the "Pages" section
-3. Select the branch you want to deploy (usually "main")
-4. Save the settings and wait for the site to be published
+The `update_json.py` script automatically scans the directory structure and updates all JSON files with the correct content and URLs.
 
-## Local Development
+To run the script:
 
-To develop locally, you can use any simple HTTP server. For example:
-
-With Python:
-```
-python -m http.server
+```bash
+python update_json.py
 ```
 
-With Node.js (after installing `http-server`):
-```
-npx http-server
-```
+This will:
+1. Scan all artist directories
+2. For each artist, scan all category directories
+3. For each category, find all audio files and their matching description files
+4. Generate or update the appropriate JSON files with proper GitHub raw URLs
+5. Sort all entries alphabetically for consistency
 
-## Technical Notes
+## Supported File Types
 
-- The site uses the GitHub API to fetch directory contents
-- No external JavaScript libraries are required
-- Audio playback uses the native HTML5 audio element
-- The sidebar can be toggled to maximize screen space, particularly useful on mobile devices 
+- Audio files: `.mp3`, `.wav`, `.m4a`, `.ogg`
+- Description files: `.txt`
+
+## Important Notes
+
+- Audio files must have matching description text files with the same base name
+- The script assumes the site is hosted on GitHub Pages from the main branch
+- File and directory names shouldn't start with `.` or `_` to be recognized
+- Add only the files you want to include in the library; the script processes all matching files
+
+## Development
+
+### Local Testing
+
+For local testing, you can:
+
+1. Run the `update_json.py` script to generate all JSON files
+2. Use a local server to test the website (e.g., `python -m http.server`)
+3. Open `http://localhost:8000` in your browser 

@@ -1,0 +1,29 @@
+{
+  "artist": "Penelope",
+  "categories": [
+    {
+      "name": "Original",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/category.json"
+    },
+    {
+      "name": "Therapy",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/category.json"
+    },
+    {
+      "name": "Dominatrix",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/category.json"
+    },
+    {
+      "name": "Teacher",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Teacher/category.json"
+    },
+    {
+      "name": "Loops",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/category.json"
+    },
+    {
+      "name": "Fills",
+      "jsonPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/category.json"
+    }
+  ]
+} 

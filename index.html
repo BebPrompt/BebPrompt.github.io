@@ -226,6 +226,28 @@
             color: var(--secondary-color);
         }
 
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 280px;
@@ -263,6 +285,10 @@
         </div>
         <div class="sidebar-content" id="artistList">
             <!-- Artists and categories will be populated here -->
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Loading artists...</p>
+            </div>
         </div>
     </div>
     
@@ -276,422 +302,11 @@
     </div>
 
     <script>
-        // Structure to store our data with actual files
-        const library = {
-            'Penelope': {
-                'Original': [
-                    {
-                        name: 'Tantric_JOIHFO_with_Penelope_No_Awakener',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tantric_JOIHFO_with_Penelope_No_Awakener.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tantric_JOIHFO_with_Penelope_No_Awakener.txt'
-                    },
-                    {
-                        name: 'Tantric_JOIHFO_with_Penelope',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tantric_JOIHFO_with_Penelope.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tantric_JOIHFO_with_Penelope.txt'
-                    },
-                    {
-                        name: 'Penelopes_Spell_-_No_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Penelopes_Spell_-_No_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Penelopes_Spell_-_No_Binaurals.txt'
-                    },
-                    {
-                        name: 'Penelopes_Spell_-_Sleep_Version_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Penelopes_Spell_-_Sleep_Version_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Penelopes_Spell_-_Sleep_Version_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'Angel_of_Your_Dreams_-_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Angel_of_Your_Dreams_-_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Angel_of_Your_Dreams_-_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'Angel_of_Your_Dreams_-_Without_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Angel_of_Your_Dreams_-_Without_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Angel_of_Your_Dreams_-_Without_Binaurals.txt'
-                    },
-                    {
-                        name: 'Tick_Tock_HFO_with_binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tick_Tock_HFO_with_binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tick_Tock_HFO_with_binaurals.txt'
-                    },
-                    {
-                        name: 'Tick_Tock_HFO_without_binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tick_Tock_HFO_without_binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tick_Tock_HFO_without_binaurals.txt'
-                    },
-                    {
-                        name: 'Hitch-Hiker_HFO_with_car_ambiance_binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Hitch-Hiker_HFO_with_car_ambiance_binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Hitch-Hiker_HFO_with_car_ambiance_binaurals.txt'
-                    },
-                    {
-                        name: 'Hitch-Hiker_HFO_with_car_ambiance_and_no_binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Hitch-Hiker_HFO_with_car_ambiance_and_no_binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Hitch-Hiker_HFO_with_car_ambiance_and_no_binaurals.txt'
-                    },
-                    {
-                        name: 'Falling_Further_Under_My_Spell_-_Awaken_version_-_No_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Falling_Further_Under_My_Spell_-_Awaken_version_-_No_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Falling_Further_Under_My_Spell_-_Awaken_version_-_No_Binaurals.txt'
-                    },
-                    {
-                        name: 'Falling_Further_Under_My_Spell_-_Free_version_-_Binaural_Beats_-_No_Awakener',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Falling_Further_Under_My_Spell_-_Free_version_-_Binaural_Beats_-_No_Awakener.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Falling_Further_Under_My_Spell_-_Free_version_-_Binaural_Beats_-_No_Awakener.txt'
-                    },
-                    {
-                        name: 'Falling_Further_Under_My_Spell_-_No_Awakener_-_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Falling_Further_Under_My_Spell_-_No_Awakener_-_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Falling_Further_Under_My_Spell_-_No_Awakener_-_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'Beyond_the_Trance_-_With_Music_-_No_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Beyond_the_Trance_-_With_Music_-_No_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Beyond_the_Trance_-_With_Music_-_No_Binaurals.txt'
-                    },
-                    {
-                        name: 'Tantric_Breathing_guide_-_No_Awakener_-_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tantric_Breathing_guide_-_No_Awakener_-_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tantric_Breathing_guide_-_No_Awakener_-_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'Tantric_Breathing_Guide_-_Awaken_version_-_Without_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tantric_Breathing_Guide_-_Awaken_version_-_Without_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Tantric_Breathing_Guide_-_Awaken_version_-_Without_Binaurals.txt'
-                    },
-                    {
-                        name: 'Mind_Melting_Whispers_HFO_-_with_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Mind_Melting_Whispers_HFO_-_with_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Mind_Melting_Whispers_HFO_-_with_Binaurals.txt'
-                    },
-                    {
-                        name: 'Loop_-_Mind_Melting_Whispers_HFO_Loop-_with_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Loop_-_Mind_Melting_Whispers_HFO_Loop-_with_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Loop_-_Mind_Melting_Whispers_HFO_Loop-_with_Binaurals.txt'
-                    },
-                    {
-                        name: 'Gym_Instructor_gives_you_your_own_personal_training_session_-_no_binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gym_Instructor_gives_you_your_own_personal_training_session_-_no_binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gym_Instructor_gives_you_your_own_personal_training_session_-_no_binaurals.txt'
-                    },
-                    {
-                        name: 'Gym_Instructor_gives_you_your_own_personal_training_session_-_with_binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gym_Instructor_gives_you_your_own_personal_training_session_-_with_binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gym_Instructor_gives_you_your_own_personal_training_session_-_with_binaurals.txt'
-                    },
-                    {
-                        name: 'Gym_Health_Motivation_Loop_-_Without_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gym_Health_Motivation_Loop_-_Without_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gym_Health_Motivation_Loop_-_Without_Binaurals.txt'
-                    },
-                    {
-                        name: 'Gym_Health_Motivation_Loop_-_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gym_Health_Motivation_Loop_-_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gym_Health_Motivation_Loop_-_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'Gentle_Succubus_-_Wet_Dream_-_Without_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gentle_Succubus_-_Wet_Dream_-_Without_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gentle_Succubus_-_Wet_Dream_-_Without_Binaurals.txt'
-                    },
-                    {
-                        name: 'Gentle_Succubus_Wet_Dream_-_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gentle_Succubus_Wet_Dream_-_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Gentle_Succubus_Wet_Dream_-_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'Popping_at_the_Coffee_Shop_-_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Popping_at_the_Coffee_Shop_-_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Original/Popping_at_the_Coffee_Shop_-_With_Binaurals.txt'
-                    }
-                ],
-                'Therapy': [
-                    {
-                        name: 'Therapy_with_Penelope_-_Part_One_-_Awake_Version',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_One_-_Awake_Version.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_One_-_Awake_Version.txt'
-                    },
-                    {
-                        name: 'Therapy_with_Penelope_-_Part_one',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_one.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_one.txt'
-                    },
-                    {
-                        name: 'The Psychology of Resistance - Therapy With Penelope Part 5 - Without Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The Psychology of Resistance - Therapy With Penelope Part 5 - Without Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The Psychology of Resistance - Therapy With Penelope Part 5 - Without Binaurals.txt'
-                    },
-                    {
-                        name: 'The Psychology of Resistance - Therapy with Penelope Part 5 (with binaurals)',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The Psychology of Resistance - Therapy with Penelope Part 5 (with binaurals).mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/The Psychology of Resistance - Therapy with Penelope Part 5 (with binaurals).txt'
-                    },
-                    {
-                        name: 'Therapy_with_Penelope_-_Part_Two',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_Two.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Part_Two.txt'
-                    },
-                    {
-                        name: 'Therapy With Penelope - Part 2 (No Binaurals with Awakener)',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy With Penelope - Part 2 (No Binaurals with Awakener).mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy With Penelope - Part 2 (No Binaurals with Awakener).txt'
-                    },
-                    {
-                        name: 'Therapy with Penelope - Part 3 (with binaurals)',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 3 (with binaurals).mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 3 (with binaurals).txt'
-                    },
-                    {
-                        name: 'Therapy with Penelope - Part 3 Awake version (no Binaurals)',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 3 Awake version (no Binaurals).mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 3 Awake version (no Binaurals).txt'
-                    },
-                    {
-                        name: 'Therapy with Penelope - Part 4 (with binaurals)',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 4 (with binaurals).mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 4 (with binaurals).txt'
-                    },
-                    {
-                        name: 'Therapy with Penelope - Part 4 (No binaurals)',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 4 (No binaurals).mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy with Penelope - Part 4 (No binaurals).txt'
-                    },
-                    {
-                        name: 'Therapy_with_Penelope_-_Feel_my_Touch',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Feel_my_Touch.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Therapy/Therapy_with_Penelope_-_Feel_my_Touch.txt'
-                    }
-                ],
-                'Dominatrix': [
-                    {
-                        name: 'Dominatrix_Series_-_Part_1_-_With_Binaurals_-_Roll_1_of_the_Die',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix_Series_-_Part_1_-_With_Binaurals_-_Roll_1_of_the_Die.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix_Series_-_Part_1_-_With_Binaurals_-_Roll_1_of_the_Die.txt'
-                    },
-                    {
-                        name: 'Dominatrix Series - Part 1 - With Binaurals - Roll 2 of the Die',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Series - Part 1 - With Binaurals - Roll 2 of the Die.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Series - Part 1 - With Binaurals - Roll 2 of the Die.txt'
-                    },
-                    {
-                        name: 'Dominatrix_Series_-_Part_1_-_Without_Binaurals_-_Roll_1_of_the_Die',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix_Series_-_Part_1_-_Without_Binaurals_-_Roll_1_of_the_Die.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix_Series_-_Part_1_-_Without_Binaurals_-_Roll_1_of_the_Die.txt'
-                    },
-                    {
-                        name: 'Dominatrix Series - Part 1 - Without Binaurals - Roll 2 of the Die',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Series - Part 1 - Without Binaurals - Roll 2 of the Die.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Series - Part 1 - Without Binaurals - Roll 2 of the Die.txt'
-                    },
-                    {
-                        name: 'Penelopes_Punishment_with_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Penelopes_Punishment_with_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Penelopes_Punishment_with_Binaurals.txt'
-                    },
-                    {
-                        name: 'Penelopes_Punishment_-_No_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Penelopes_Punishment_-_No_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Penelopes_Punishment_-_No_Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix Series - Part 2 - With Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Series - Part 2 - With Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Series - Part 2 - With Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix Series - Part 2 - Without Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Series - Part 2 - Without Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Series - Part 2 - Without Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix Part 3 - Sleep version - With Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Part 3 - Sleep version - With Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Part 3 - Sleep version - With Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix Part 3 - Awake Version - Without Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Part 3 - Awake Version - Without Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Part 3 - Awake Version - Without Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix Part 4 - With Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Part 4 - With Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Part 4 - With Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix_Training_File_One_-_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix_Training_File_One_-_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix_Training_File_One_-_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix_Training_File_One_-_Without_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix_Training_File_One_-_Without_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix_Training_File_One_-_Without_Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix Training File 2 - With Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 2 - With Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 2 - With Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix Training File 2 - Without Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 2 - Without Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 2 - Without Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix Training File 3 - With Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 3 - With Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 3 - With Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix Training File 3 - Without Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 3 - Without Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 3 - Without Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix Training File 4 - With Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 4 - With Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 4 - With Binaurals.txt'
-                    },
-                    {
-                        name: 'Dominatrix Training File 4 - Without Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 4 - Without Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Dominatrix/Dominatrix Training File 4 - Without Binaurals.txt'
-                    }
-                ],
-                'Teacher': [
-                    {
-                        name: 'Teacher_Series_-_Part_One_-_No_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Teacher/Teacher_Series_-_Part_One_-_No_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Teacher/Teacher_Series_-_Part_One_-_No_Binaurals.txt'
-                    },
-                    {
-                        name: 'Teacher_Series_-_Part_One_-_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Teacher/Teacher_Series_-_Part_One_-_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Teacher/Teacher_Series_-_Part_One_-_With_Binaurals.txt'
-                    }
-                ],
-                'Loops': [
-                    {
-                        name: 'Positive_Affirmations_with_Penelope_for_my_Good_Boys',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Positive_Affirmations_with_Penelope_for_my_Good_Boys.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Positive_Affirmations_with_Penelope_for_my_Good_Boys.txt'
-                    },
-                    {
-                        name: 'Fall_deeper_in_to_my_voice_loop',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Fall_deeper_in_to_my_voice_loop.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Fall_deeper_in_to_my_voice_loop.txt'
-                    },
-                    {
-                        name: 'Exclusive_Powerless_Puppet_File_for_August',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Exclusive_Powerless_Puppet_File_for_August.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Exclusive_Powerless_Puppet_File_for_August.txt'
-                    },
-                    {
-                        name: 'Endless_Snappy_Countdown',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Endless_Snappy_Countdown.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Endless_Snappy_Countdown.txt'
-                    },
-                    {
-                        name: 'Resistance_Loop',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Resistance_Loop.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Resistance_Loop.txt'
-                    },
-                    {
-                        name: 'FA_Trigger_Suggestion_Removal_Brain_Block_Cleaner_Removal_Reversal_With_Music',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/FA_Trigger_Suggestion_Removal_Brain_Block_Cleaner_Removal_Reversal_With_Music.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/FA_Trigger_Suggestion_Removal_Brain_Block_Cleaner_Removal_Reversal_With_Music.txt'
-                    },
-                    {
-                        name: 'A_little_Preview',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/A_little_Preview.wav',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/A_little_Preview.txt'
-                    },
-                    {
-                        name: 'A_little_sample_Too_many_whispers_or_not_enough',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/A_little_sample_Too_many_whispers_or_not_enough.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/A_little_sample_Too_many_whispers_or_not_enough.txt'
-                    },
-                    {
-                        name: 'Loop_-_Mind_Melting_Whispers_HFO_Loop-_with_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Loop_-_Mind_Melting_Whispers_HFO_Loop-_with_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/Loop_-_Mind_Melting_Whispers_HFO_Loop-_with_Binaurals.txt'
-                    },
-                    {
-                        name: 'New_Microphone_Test',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/New_Microphone_Test.wav',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Loops/New_Microphone_Test.txt'
-                    }
-                ],
-                'Fills': [
-                    {
-                        name: 'A_Promise_of_Pleasure_with_Penelope',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/A_Promise_of_Pleasure_with_Penelope.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/A_Promise_of_Pleasure_with_Penelope.txt'
-                    },
-                    {
-                        name: 'FM_-_Wet_Dream_Induction_-_Free_File_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/FM_-_Wet_Dream_Induction_-_Free_File_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/FM_-_Wet_Dream_Induction_-_Free_File_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'New_Levels_Of_Pleasure_with_Penelope_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/New_Levels_Of_Pleasure_with_Penelope_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/New_Levels_Of_Pleasure_with_Penelope_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'No_Nut_November_-_Will_Power_Test_-_Without_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/No_Nut_November_-_Will_Power_Test_-_Without_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/No_Nut_November_-_Will_Power_Test_-_Without_Binaurals.txt'
-                    },
-                    {
-                        name: 'No_Nut_November_-_Will_Power_Test_-_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/No_Nut_November_-_Will_Power_Test_-_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/No_Nut_November_-_Will_Power_Test_-_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'HFO_Slave_Training_-_without_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/HFO_Slave_Training_-_without_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/HFO_Slave_Training_-_without_Binaurals.txt'
-                    },
-                    {
-                        name: 'HFO_Slave_Training_-_with_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/HFO_Slave_Training_-_with_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/HFO_Slave_Training_-_with_Binaurals.txt'
-                    },
-                    {
-                        name: 'Guided_Voicejob_-_Sleep_Deepener_-_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Guided_Voicejob_-_Sleep_Deepener_-_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Guided_Voicejob_-_Sleep_Deepener_-_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'Guided_Voicejob_-_Awake_Version_-_No_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Guided_Voicejob_-_Awake_Version_-_No_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Guided_Voicejob_-_Awake_Version_-_No_Binaurals.txt'
-                    },
-                    {
-                        name: 'Brainwashing_for_Beginners_-_Without_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Brainwashing_for_Beginners_-_Without_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Brainwashing_for_Beginners_-_Without_Binaurals.txt'
-                    },
-                    {
-                        name: 'Brainwashing_for_Beginners_-_With_Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Brainwashing_for_Beginners_-_With_Binaurals.mp3',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Brainwashing_for_Beginners_-_With_Binaurals.txt'
-                    },
-                    {
-                        name: 'Pleasure with Penelope - Brain Button Stimulation',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Pleasure with Penelope - Brain Button Stimulation.m4a',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Pleasure with Penelope - Brain Button Stimulation.txt'
-                    },
-                    {
-                        name: 'Pleasure with Penelope - Brain Button Stimulation With Binaurals',
-                        audioPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Pleasure with Penelope - Brain Button Stimulation With Binaurals.m4a',
-                        descPath: 'https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Fills/Pleasure with Penelope - Brain Button Stimulation With Binaurals.txt'
-                    }
-                ]
-            }
+        // Cache for fetched data
+        const dataCache = {
+            artists: null,
+            artistMetadata: {},
+            categoryFiles: {}
         };
 
         let currentArtist = '';
@@ -735,69 +350,167 @@
             }
         });
 
-        // Function to render the sidebar
-        function renderSidebar() {
-            const artistList = document.getElementById('artistList');
-            artistList.innerHTML = '';
+        // Fetch API with error handling
+        async function fetchWithRetry(url, retries = 3) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                if (retries > 0) {
+                    console.warn(`Retry fetching ${url}, ${retries} attempts left`);
+                    return fetchWithRetry(url, retries - 1);
+                }
+                throw error;
+            }
+        }
+
+        // Fetch all artists
+        async function fetchArtists() {
+            if (dataCache.artists) {
+                return dataCache.artists;
+            }
             
-            for (const artist in library) {
-                const artistDiv = document.createElement('div');
-                artistDiv.className = 'category';
+            try {
+                const artistsData = await fetchWithRetry('https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/artists.json');
+                dataCache.artists = artistsData;
+                return artistsData;
+            } catch (error) {
+                console.error('Error fetching artists:', error);
+                return { artists: [] };
+            }
+        }
+
+        // Fetch artist metadata
+        async function fetchArtistMetadata(artist) {
+            if (dataCache.artistMetadata[artist.name]) {
+                return dataCache.artistMetadata[artist.name];
+            }
+            
+            try {
+                const metadata = await fetchWithRetry(artist.metadataPath);
+                dataCache.artistMetadata[artist.name] = metadata;
+                return metadata;
+            } catch (error) {
+                console.error(`Error fetching metadata for ${artist.name}:`, error);
+                return { categories: [] };
+            }
+        }
+
+        // Fetch category files
+        async function fetchCategoryFiles(categoryPath) {
+            if (dataCache.categoryFiles[categoryPath]) {
+                return dataCache.categoryFiles[categoryPath];
+            }
+            
+            try {
+                const files = await fetchWithRetry(categoryPath);
+                dataCache.categoryFiles[categoryPath] = files;
+                return files;
+            } catch (error) {
+                console.error(`Error fetching category files from ${categoryPath}:`, error);
+                return { files: [] };
+            }
+        }
+
+        // Function to render the sidebar
+        async function renderSidebar() {
+            const artistList = document.getElementById('artistList');
+            artistList.innerHTML = '<div class="loading-container"><div class="loading-spinner"></div><p>Loading artists...</p></div>';
+            
+            try {
+                const artistsData = await fetchArtists();
                 
-                const artistTitle = document.createElement('div');
-                artistTitle.className = 'category-title';
-                artistTitle.innerHTML = `
-                    <span>${artist}</span>
-                    <span>▶</span>
-                `;
-                artistTitle.addEventListener('click', () => {
-                    const content = artistDiv.querySelector('.category-content');
-                    content.classList.toggle('active');
-                    artistTitle.querySelector('span:last-child').textContent = 
-                        content.classList.contains('active') ? '▼' : '▶';
-                });
-                
-                const artistContent = document.createElement('div');
-                artistContent.className = 'category-content';
-                
-                for (const category in library[artist]) {
-                    const categoryItem = document.createElement('div');
-                    categoryItem.className = 'item';
-                    categoryItem.textContent = category;
-                    categoryItem.addEventListener('click', () => {
-                        // Remove active class from all items
-                        document.querySelectorAll('.sidebar .item').forEach(item => {
-                            item.classList.remove('active');
-                        });
-                        
-                        // Add active class to clicked item
-                        categoryItem.classList.add('active');
-                        
-                        // Load audio files for this category
-                        loadCategory(artist, category);
-                    });
-                    
-                    artistContent.appendChild(categoryItem);
+                if (artistsData.artists.length === 0) {
+                    artistList.innerHTML = '<p>No artists found.</p>';
+                    return;
                 }
                 
-                artistDiv.appendChild(artistTitle);
-                artistDiv.appendChild(artistContent);
-                artistList.appendChild(artistDiv);
+                artistList.innerHTML = '';
+                
+                for (const artist of artistsData.artists) {
+                    const artistMetadata = await fetchArtistMetadata(artist);
+                    
+                    const artistDiv = document.createElement('div');
+                    artistDiv.className = 'category';
+                    
+                    const artistTitle = document.createElement('div');
+                    artistTitle.className = 'category-title';
+                    artistTitle.innerHTML = `
+                        <span>${artist.name}</span>
+                        <span>▶</span>
+                    `;
+                    artistTitle.addEventListener('click', () => {
+                        const content = artistDiv.querySelector('.category-content');
+                        content.classList.toggle('active');
+                        artistTitle.querySelector('span:last-child').textContent = 
+                            content.classList.contains('active') ? '▼' : '▶';
+                    });
+                    
+                    const artistContent = document.createElement('div');
+                    artistContent.className = 'category-content';
+                    
+                    for (const category of artistMetadata.categories) {
+                        const categoryItem = document.createElement('div');
+                        categoryItem.className = 'item';
+                        categoryItem.textContent = category.name;
+                        categoryItem.addEventListener('click', () => {
+                            // Remove active class from all items
+                            document.querySelectorAll('.sidebar .item').forEach(item => {
+                                item.classList.remove('active');
+                            });
+                            
+                            // Add active class to clicked item
+                            categoryItem.classList.add('active');
+                            
+                            // Load audio files for this category
+                            loadCategory(artist.name, category.name, category.jsonPath);
+                        });
+                        
+                        artistContent.appendChild(categoryItem);
+                    }
+                    
+                    artistDiv.appendChild(artistTitle);
+                    artistDiv.appendChild(artistContent);
+                    artistList.appendChild(artistDiv);
+                }
+                
+                // Expand first artist by default
+                setTimeout(() => {
+                    const firstArtist = document.querySelector('.category-title');
+                    if (firstArtist) {
+                        firstArtist.click();
+                    }
+                }, 100);
+                
+            } catch (error) {
+                console.error('Error rendering sidebar:', error);
+                artistList.innerHTML = '<p>Error loading artists. Please try again later.</p>';
             }
         }
 
         // Function to load all audio files in a category
-        async function loadCategory(artist, category) {
-            currentArtist = artist;
-            currentCategory = category;
+        async function loadCategory(artistName, categoryName, categoryJsonPath) {
+            currentArtist = artistName;
+            currentCategory = categoryName;
             
             const audioContainer = document.getElementById('audioContainer');
-            audioContainer.innerHTML = `<h1>${artist} - ${category}</h1><div id="audio-list"></div>`;
-            const audioList = document.getElementById('audio-list');
+            audioContainer.innerHTML = `
+                <h1>${artistName} - ${categoryName}</h1>
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p>Loading audio files...</p>
+                </div>
+            `;
             
             try {
-                // Use the hardcoded files instead of fetching from GitHub API
-                const files = library[artist][category];
+                const categoryData = await fetchCategoryFiles(categoryJsonPath);
+                const files = categoryData.files || [];
+                
+                audioContainer.innerHTML = `<h1>${artistName} - ${categoryName}</h1><div id="audio-list"></div>`;
+                const audioList = document.getElementById('audio-list');
                 
                 if (files.length === 0) {
                     audioList.innerHTML = '<p>No audio files found in this category.</p>';
@@ -898,9 +611,9 @@
                 }
                 
             } catch (error) {
-                console.error(`Error loading ${artist}/${category}:`, error);
+                console.error(`Error loading ${artistName}/${categoryName}:`, error);
                 audioContainer.innerHTML = `
-                    <h1>${artist} - ${category}</h1>
+                    <h1>${artistName} - ${categoryName}</h1>
                     <p>Error loading audio files. Please try again later.</p>
                 `;
             }
@@ -930,15 +643,7 @@
         // Initialize the library
         document.addEventListener('DOMContentLoaded', () => {
             renderSidebar();
-            
-            // Expand first artist by default
-            setTimeout(() => {
-                const firstArtist = document.querySelector('.category-title');
-                if (firstArtist) {
-                    firstArtist.click();
-                }
-            }, 100);
-            });
+        });
     </script>
 </body>
-</html>
+</html> 

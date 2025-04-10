@@ -1,0 +1,15 @@
+{
+  "category": "Teacher",
+  "files": [
+    {
+      "name": "Teacher_Series_-_Part_One_-_No_Binaurals",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Teacher/Teacher_Series_-_Part_One_-_No_Binaurals.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Teacher/Teacher_Series_-_Part_One_-_No_Binaurals.txt"
+    },
+    {
+      "name": "Teacher_Series_-_Part_One_-_With_Binaurals",
+      "audioPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Teacher/Teacher_Series_-_Part_One_-_With_Binaurals.mp3",
+      "descPath": "https://raw.githubusercontent.com/BebPrompt/BebPrompt.github.io/main/Penelope/Teacher/Teacher_Series_-_Part_One_-_With_Binaurals.txt"
+    }
+  ]
+} 
